@@ -1,20 +1,30 @@
-import socket
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.connect(('www.sina.com.cn', 80))
-#这个就是http协议 
-s.send('GET / HTTP/1.1\r\nHost: www.sina.com.cn\r\nConnection: close\r\n\r\n')
-buffer = []
-#缓冲区最大1024 要不断的循环
-while True:
-    d = s.recv(1024)
-    if d:
-        buffer.append(d)
-    else:
-        break
-data = ''.join(buffer)
+MatOfRect faceDetections = new MatOfRect();
+        faceDetector.detectMultiScale(image, faceDetections);
 
-s.close()
-header, html = data.split('\r\n\r\n', 1)
-print header
-with open('sina.html', 'wb') as f:
-    f.write(html)
+        System.out.println(String.format("Detected %s faces", faceDetections.toArray().length));
+        Point center = null;
+        int radius = 200;
+        for (Rect rect : faceDetections.toArray()) {
+            center = new Point(rect.x +  (int) (rect.width/2),rect.y+(int)(rect.height/2));
+        }
+        Mat c = Mat.zeros(image.rows(), image.cols(), CvType.CV_8UC4);
+
+
+        for (int x = 0; x < image.cols(); x++) {
+            for (int y= 0; y < image.rows(); y++) {
+                double temp = ((x - center.x) * (x - center.x) + (y - center.y) *(y - center.y));
+                if (temp < (radius * radius)) {
+                    double[] re = new double[4];
+                    re[0]= image.get(y,x)[0];
+                    re[1]= image.get(y,x)[1];
+                    re[2]= image.get(y,x)[2];
+                    re[3]= 255;
+
+                    c.put(y,x,re);
+                }
+
+            }
+        }
+
+        String filename1 = "faceDetection1.png";
+        Imgcodecs.imwrite(filename1, c);
