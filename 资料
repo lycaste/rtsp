@@ -1,2 +1,40 @@
 https://debugtalk.com/post/build-ideal-app-automation-test-framework/
 https://zhuanlan.zhihu.com/c_157436054
+
+
+
+#include json2.js
+
+var fileRef = File("/Users/yh/Desktop/ps/2.psd")
+var docRef = app.open(fileRef)
+var titleGroup = app.activeDocument.layerSets.getByName('test');
+var titleLayer = titleGroup.layers[0];
+titleLayer.textItem.contents = "1231223"
+activeDocument.close(SaveOptions.SAVECHANGES);
+
+saveImg("hello");
+
+function saveImg(name) {
+    var file = new File("/Users/yh/Desktop/ps/test.jpg");
+    var opts = new JPEGSaveOptions();
+    opts.quality = 10;
+    app.activeDocument.saveAs(file, opts, true);
+}
+
+
+
+// var obj = JSON.parse('[{"a":1},{"a":12}]');
+// alert("l:" + obj.length)
+// for (var index = 0; index < obj.length; index++) {
+//     var element = obj[index];
+//     alert(element.a)
+    
+// }
+
+on run argv
+     tell application "Adobe Photoshop CC 2017"
+          set js to "#include '/Users/yh/Documents/ps/t.jsx';" & return
+          set js to js & "main(arguments);" & return
+          do javascript js with arguments argv
+     end tell
+end run
