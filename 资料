@@ -38,3 +38,42 @@ on run argv
           do javascript js with arguments argv
      end tell
 end run
+
+
+/// <reference types="types-for-adobe/Photoshop/2015.5"/>
+//#include json2.js
+
+interface Translate {
+    path: string;
+    orginText: string;
+    tranText: string;
+
+}
+
+//编译时候注释掉
+class JSON {static parse(str:string):any {return;}}
+
+function main(args : string[]) {
+
+    let objs : Translate[] = JSON.parse(args[0]);
+    for (let index = 0; index < objs.length; index++) {
+        const element : Translate = objs[index];
+        alert(element.path)
+        
+    }
+    // var doc:Document = app.activeDocument;
+    // walkLayers(doc.layers);
+}
+
+
+function walkLayers(layers : Layers) {
+    for (var index = 0; index < layers.length; index++) {
+        var layer:Layer = layers[index];
+        if(layer instanceof LayerSet) {
+            walkLayers(layer.layers);
+        } else if (layer instanceof ArtLayer && layer.kind === LayerKind.TEXT) {
+            alert(layer.name);
+        }
+        
+    }
+}
